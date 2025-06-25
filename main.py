@@ -9,10 +9,10 @@ app = Flask(__name__)
 with open("config.json", "r") as f:
     config = json.load(f)
 
-# Your Stripe secret key
+# Stripe secret key
 stripe.api_key = "sk_live_REPLACE_THIS"
 
-# Your webhook secret from Stripe dashboard
+# Webhook secret
 STRIPE_WEBHOOK_SECRET = "whsec_REPLACE_THIS"
 
 @app.route("/stripe-webhook", methods=["POST"])
@@ -49,3 +49,9 @@ def stripe_webhook():
             return "Shelly trigger error", 500
 
     return "OK", 200
+
+# Proper Render port binding
+if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
